@@ -109,7 +109,6 @@ static const activity_id ACT_BLEED( "ACT_BLEED" );
 static const activity_id ACT_BUILD( "ACT_BUILD" );
 static const activity_id ACT_BUTCHER( "ACT_BUTCHER" );
 static const activity_id ACT_BUTCHER_FULL( "ACT_BUTCHER_FULL" );
-static const activity_id ACT_CLEAR_RUBBLE( "ACT_CLEAR_RUBBLE" );
 static const activity_id ACT_CONSUME_DRINK_MENU( "ACT_CONSUME_DRINK_MENU" );
 static const activity_id ACT_CONSUME_FOOD_MENU( "ACT_CONSUME_FOOD_MENU" );
 static const activity_id ACT_CONSUME_FUEL_MENU( "ACT_CONSUME_FUEL_MENU" );
@@ -303,7 +302,6 @@ activity_handlers::finish_functions = {
     { ACT_MEND_ITEM, mend_item_finish },
     { ACT_GUNMOD_ADD, gunmod_add_finish },
     { ACT_TOOLMOD_ADD, toolmod_add_finish },
-    { ACT_CLEAR_RUBBLE, clear_rubble_finish },
     { ACT_WAIT, wait_finish },
     { ACT_WAIT_WEATHER, wait_weather_finish },
     { ACT_WAIT_NPC, wait_npc_finish },
@@ -2573,19 +2571,6 @@ void activity_handlers::toolmod_add_finish( player_activity *act, Character *you
     mod.set_flag( flag_IRREMOVABLE );
     tool.put_in( mod, item_pocket::pocket_type::MOD );
     act->targets[1].remove_item();
-}
-
-void activity_handlers::clear_rubble_finish( player_activity *act, Character *you )
-{
-    const tripoint &pos = act->placement;
-    map &here = get_map();
-    you->add_msg_if_player( m_info, _( "You clear up the %s." ),
-                            here.furnname( pos ) );
-    here.furn_set( pos, f_null );
-
-    act->set_to_null();
-
-    here.maybe_trigger_trap( pos, *you, true );
 }
 
 // This activity opens the menu (it's not meant to queue consumption of items)

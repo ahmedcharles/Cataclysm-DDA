@@ -119,7 +119,6 @@
 #include "weather_gen.h"
 #include "weather_type.h"
 
-static const activity_id ACT_CLEAR_RUBBLE( "ACT_CLEAR_RUBBLE" );
 static const activity_id ACT_FILL_PIT( "ACT_FILL_PIT" );
 static const activity_id ACT_FISH( "ACT_FISH" );
 static const activity_id ACT_GAME( "ACT_GAME" );
@@ -3245,7 +3244,7 @@ cata::optional<int> iuse::clear_rubble( Character *p, item *it, bool, const trip
     for( std::size_t i = 0; i < helpersize; i++ ) {
         add_msg( m_info, _( "%s helps with this task…" ), helpers[i]->get_name() );
     }
-    player_activity act( ACT_CLEAR_RUBBLE, moves / bonus, bonus );
+    player_activity act( clear_rubble_activity_actor( moves / bonus ) );
     p->assign_activity( act );
     p->activity.placement = pnt;
     return it->type->charges_to_use();
